@@ -11,26 +11,37 @@ author_profile: true
 
 {% include base_path %}
 
-<!-- New style rendering if publication categories are defined -->
-{% if site.publication_category %}
-  {% for category in site.publication_category  %}
-    {% assign title_shown = false %}
-    {% for post in site.publications reversed %}
-      {% if post.category != category[0] %}
-        {% continue %}
-      {% endif %}
-      {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
-        {% assign title_shown = true %}
-      {% endunless %}
-      {% include archive-single.html %}
-    {% endfor %}
-  {% endfor %}
-{% else %}
-  {% for post in site.publications reversed %}
-    {% include archive-single.html %}
+{% assign preprints = site.publications | where: "category", "preprints" | sort: "date" | reverse %}
+{% assign conferences = site.publications | where: "category", "conferences" | sort: "date" | reverse %}
+
+{% if preprints.size > 0 %}
+  <h2>Preprints</h2><hr />
+  {% for post in preprints %}
+    <div class="list__item">
+      <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+        <h2 class="archive__item-title" itemprop="headline">{{ post.title }}</h2>
+        <p>Published in <i>{{ post.venue }}</i>, {{ post.date | date: "%Y" }}</p>
+        {% if post.excerpt %}
+          <div class="archive__item-excerpt" itemprop="description">{{ post.excerpt | markdownify }}</div>
+        {% endif %}
+        {% include /components/citations.html citation=post.citation paperurl=post.paperurl %}
+      </article>
+    </div>
   {% endfor %}
 {% endif %}
 
-
-
+{% if conferences.size > 0 %}
+  <h2>Conference Papers</h2><hr />
+  {% for post in conferences %}
+    <div class="list__item">
+      <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+        <h2 class="archive__item-title" itemprop="headline">{{ post.title }}</h2>
+        <p>Published in <i>{{ post.venue }}</i>, {{ post.date | date: "%Y" }}</p>
+        {% if post.excerpt %}
+          <div class="archive__item-excerpt" itemprop="description">{{ post.excerpt | markdownify }}</div>
+        {% endif %}
+        {% include /components/citations.html citation=post.citation paperurl=post.paperurl %}
+      </article>
+    </div>
+  {% endfor %}
+{% endif %}

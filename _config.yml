@@ -80,7 +80,7 @@ author:
   youtube          :
   zhihu            :
 
-# Publication Category
+# Publication Category - The following the list of publication categories and their headings
 publication_category:
   preprints:
     title: 'Preprints'
@@ -210,16 +210,16 @@ kramdown:
 # Collections
 collections:
   teaching:
-    output: true
+    output: false
     permalink: /:collection/:path/
   publications:
-    output: true
+    output: false
     permalink: /:collection/:path/
   portfolio:
-    output: true
+    output: false
     permalink: /:collection/:path/
   talks:
-    output: true
+    output: false
     permalink: /:collection/:path/
 
 # Defaults
